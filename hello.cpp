@@ -5,22 +5,19 @@
 #include <QVBoxLayout>
 #include <QComboBox>
 
-
 class FileOpenDialog : public QWidget{
     
-    
 public:
-    
-    int filterIndex;
-    
+
     FileOpenDialog(QWidget *parent = nullptr) : QWidget(parent) {
         setupUi();
     }
     
     private slots:
     void openFile() {
+        QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(),
+                                                        tr("Sequencher Project Files (*.spf);;Common Assembly Format (*.caf);;All Readable (*);;Smaller than 500kb;;500kb or larger"));
         
-        QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), tr("Text Files (*.txt);;All Files (*)"));
         if (!filePath.isEmpty()) {
             // Handle the selected file
             qDebug("Selected File: %s", qPrintable(filePath));
@@ -29,7 +26,6 @@ public:
     
     private slots:
     void onComboBoxIndexChanged(int index) {
-        filterIndex = index;
         // Handle the selection change
         qDebug("Selected Index: %d", index);
     }
@@ -59,13 +55,12 @@ private:
     }
 };
 
-
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     
     FileOpenDialog window;
     window.show();
-
+    
     return app.exec();
 }
