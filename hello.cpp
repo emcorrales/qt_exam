@@ -14,7 +14,7 @@ public:
     private slots:
     void openFile() {
         QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(),
-                                                        tr("Sequencher Project Files (*.spf);;Common Assembly Format (*.caf);;All Readable (*);;Smaller than 500kb;;500kb or larger"));
+                                                        tr("Sequencher Project Files (*.spf);;Common Assembly Format (*.caf);;All Readable (*.spf *.caf);;Smaller than 500kb;;500kb or larger"));
         
         if (!filePath.isEmpty()) {
             // Handle the selected file
