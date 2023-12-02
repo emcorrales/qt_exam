@@ -2,6 +2,7 @@
 #include <QFileSystemModel>
 #include <QTreeView>
 #include <QDir>
+#include <QVBoxLayout>
 
 class CustomFileSystemModel : public QFileSystemModel
 {
@@ -48,30 +49,44 @@ private:
     qint64 maxSize = -1;
 };
 
+class MyWidget : public QWidget
+{
+public:
+    MyWidget(QWidget *parent = nullptr) : QWidget(parent)
+    {
+        // Create a custom file system model
+        CustomFileSystemModel *model = new CustomFileSystemModel(this);
+        
+        // Set the home path as default model.
+        QString homePath = QDir::homePath(); // Change this to your desired directory
+        model->setRootPath(homePath);
+        
+        // Create a tree view and set the model
+        QTreeView *treeView = new QTreeView(this);
+        treeView->setModel(model);
+        
+        // Set the root index of the tree view to the root path index
+        QModelIndex homeIndex = model->index(homePath);
+        treeView->setRootIndex(homeIndex);
+        
+        // Set a maximum file size for filtering (adjust as needed)
+        model->setMaxSize(50 * 1024); // Filter files greater than 1 MB
+        
+        // Create a layout and set the tree view
+        QVBoxLayout *layout = new QVBoxLayout(this);
+        layout->addWidget(treeView);
+        
+        // Set the layout for the widget
+        setLayout(layout);
+    }
+};
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
     
-    // Create a custom file system model
-    CustomFileSystemModel model;
-    
-    // Set the home path as default model.
-    QString homePath = QDir::homePath(); // Change this to your desired directory
-    model.setRootPath(homePath);
-    
-    // Create a tree view and set the model
-    QTreeView treeView;
-    treeView.setModel(&model);
-    
-    // Set the root index of the tree view to the root path index
-    QModelIndex homeIndex = model.index(homePath);
-    treeView.setRootIndex(homeIndex);
-    
-    // Set a maximum file size for filtering (adjust as needed)
-    model.setMaxSize(50 * 1024); // Filter files greater than 1 MB
-    
-    // Show the tree view
-    treeView.show();
+    MyWidget widget;
+    widget.show();
     
     return app.exec();
 }
