@@ -75,22 +75,22 @@ public:
         QVBoxLayout *layout = new QVBoxLayout(this);
         
         // Create a custom file system model
-        CustomFileSystemModel *model = new CustomFileSystemModel(this);
+        mModel = new CustomFileSystemModel(this);
         
         // Set the home path as default model.
         QString homePath = QDir::homePath(); // Change this to your desired directory
-        model->setRootPath(homePath);
+        mModel->setRootPath(homePath);
         
         // Create a tree view and set the model
         mTreeView = new QTreeView(this);
-        mTreeView->setModel(model);
+        mTreeView->setModel(mModel);
         
         // Set the root index of the tree view to the root path index
-        QModelIndex homeIndex = model->index(homePath);
+        QModelIndex homeIndex = mModel->index(homePath);
         mTreeView->setRootIndex(homeIndex);
         
         // Set a maximum file size for filtering (adjust as needed)
-        model->setMaxSize(50 * 1024); // Filter files greater than 1 MB
+        mModel->setMaxSize(50 * 1024); // Filter files greater than 1 MB
         layout->addWidget(mTreeView);
         
         QComboBox *comboBox = new QComboBox(this);
@@ -108,6 +108,7 @@ public:
     
 private:
     QTreeView *mTreeView;
+    CustomFileSystemModel *mModel;
     
     private slots:
     void onComboBoxIndexChanged(int index) {
