@@ -4,12 +4,18 @@
 #include <QDir>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QRegularExpression>
 
 class CustomFileSystemModel : public QFileSystemModel
 {
 public:
     CustomFileSystemModel(QObject* parent = nullptr)
     : QFileSystemModel(parent)
+    {
+    }
+    
+    CustomFileSystemModel(const QRegularExpression &nameFilterRegex, QObject *parent = nullptr)
+    : QFileSystemModel(parent), nameFilterRegex(nameFilterRegex)
     {
     }
     
@@ -23,8 +29,17 @@ public:
             } else {
                 return QVariant();
             }
+        } else if (role == Qt::DisplayRole || role == Qt::EditRole) {
+            // Only display files that match the name filter regex
+            if (index.isValid() && !isDir(index)) {
+                QString fileName = QFileSystemModel::data(index, QFileSystemModel::FileNameRole).toString();
+                if (nameFilterRegex.match(fileName).hasMatch()) {
+                    return fileName;
+                } else {
+                    return QVariant(); // Hide files that don't match the regex
+                }
+            }
         }
-        
         return QFileSystemModel::data(index, role);
     }
     
@@ -48,6 +63,7 @@ public:
     
 private:
     qint64 maxSize = -1;
+    QRegularExpression nameFilterRegex;
 };
 
 class MyWidget : public QWidget
@@ -66,16 +82,16 @@ public:
         model->setRootPath(homePath);
         
         // Create a tree view and set the model
-        QTreeView *treeView = new QTreeView(this);
-        treeView->setModel(model);
+        mTreeView = new QTreeView(this);
+        mTreeView->setModel(model);
         
         // Set the root index of the tree view to the root path index
         QModelIndex homeIndex = model->index(homePath);
-        treeView->setRootIndex(homeIndex);
+        mTreeView->setRootIndex(homeIndex);
         
         // Set a maximum file size for filtering (adjust as needed)
         model->setMaxSize(50 * 1024); // Filter files greater than 1 MB
-        layout->addWidget(treeView);
+        layout->addWidget(mTreeView);
         
         QComboBox *comboBox = new QComboBox(this);
         comboBox->addItem("Sequencher Projects");
@@ -90,9 +106,40 @@ public:
         setLayout(layout);
     }
     
+private:
+    QTreeView *mTreeView;
+    
     private slots:
     void onComboBoxIndexChanged(int index) {
-        int filterIndex = index;
+        // Create a regular expression for filtering file names (e.g., ".*\\.txt")
+        QRegularExpression nameFilterRegex(".*\\.txt");
+        
+        // Create a custom file system model with the specified name filter regex
+        CustomFileSystemModel *model = new CustomFileSystemModel(nameFilterRegex);
+        
+        // Set the root path to the directory you want to display
+        QString homePath = QDir::homePath(); // Change this to your desired directory
+        model->setRootPath(homePath);
+        
+        switch (index) {
+            case 0:
+                
+                break;
+                
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+                
+            default:
+                break;
+        }
+        
+        mTreeView->setModel(model);
         // Handle the selection change
         qDebug("Selected Index: %d", index);
     }
