@@ -15,4 +15,5 @@ QT += widgets
 #DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060000 # disables all APIs deprecated in Qt 6.0.0 and earlier
 
 # Input
-SOURCES += main.cpp
+HEADERS += custom_dialog.hpp custom_filesystem_model.hpp
+SOURCES += custom_dialog.cpp custom_filesystem_model.cpp main.cpp
