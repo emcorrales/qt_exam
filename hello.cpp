@@ -71,6 +71,7 @@ public:
         // Set spf as default filter.
         QStringList filters;
         filters << "*.spf";
+        mModel->setNameFilters(filters);
         
         // Create a tree view and set the model
         mTreeView = new QTreeView(this);
