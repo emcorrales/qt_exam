@@ -11,6 +11,8 @@
 #define SMALL_FILE 3
 #define LARGE_FILE 4
 
+#define SMALL_FILE_MAX_SIZE 500 * 1024
+
 class CustomFileSystemModel : public QFileSystemModel
 {
 public:
@@ -89,7 +91,7 @@ public:
         mTreeView->setRootIndex(homeIndex);
         
         // Set a maximum file size for filtering (adjust as needed)
-        mModel->setMaxSize(50 * 1024); // Filter files greater than 1 MB
+        mModel->setMaxSize(SMALL_FILE_MAX_SIZE); // Filter files greater than 500kb
         layout->addWidget(mTreeView);
         
         QComboBox *comboBox = new QComboBox(this);
