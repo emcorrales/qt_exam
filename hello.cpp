@@ -41,7 +41,11 @@ public:
         
         // Disable specific items (e.g., files with size > maxSize)
         qint64 fileSize = fileInfo(index).size();
+        
+        
         if (fileSize > maxSize && mFilterMode == SMALL_FILE) {
+            return defaultFlags & ~Qt::ItemIsEnabled;
+        } else if (mFilterMode == LARGE_FILE && fileSize < maxSize) {
             return defaultFlags & ~Qt::ItemIsEnabled;
         }
         
