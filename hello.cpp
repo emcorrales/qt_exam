@@ -21,20 +21,6 @@ public:
     {
     }
     
-    QVariant data(const QModelIndex& index, int role) const override
-    {
-        if (role == Qt::SizeHintRole) {
-            // Filter files based on size.
-            qint64 fileSize = fileInfo(index).size();
-            if (fileSize <= maxSize) {
-                return QFileSystemModel::data(index, role);
-            } else {
-                return QVariant();
-            }
-        }
-        return QFileSystemModel::data(index, role);
-    }
-    
     Qt::ItemFlags flags(const QModelIndex& index) const override
     {
         Qt::ItemFlags defaultFlags = QFileSystemModel::flags(index);
