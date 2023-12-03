@@ -5,6 +5,12 @@
 #include <QVBoxLayout>
 #include <QComboBox>
 
+#define SPF 0
+#define CAF 1
+#define ALL_READABLE 2
+#define SMALL_FILE 3
+#define LARGE_FILE 4
+
 class CustomFileSystemModel : public QFileSystemModel
 {
 public:
@@ -98,31 +104,32 @@ private:
     QTreeView *mTreeView;
     CustomFileSystemModel *mModel;
     
+    
     private slots:
     void onComboBoxIndexChanged(int index) {
         QStringList filters;
 
         switch (index) {
-            case 0:
+            case SPF:
                 filters << "*.spf";
                 mModel->setNameFilters(filters);
                 break;
                 
-            case 1:
+            case CAF:
                 filters << "*.caf";
                 mModel->setNameFilters(filters);
                 break;
                 
-            case 2:
+            case ALL_READABLE:
                 filters << "*.spf";
                 filters << "*.caf";
                 mModel->setNameFilters(filters);
                 break;
                 
-            case 3:
+            case SMALL_FILE:
                 break;
                 
-            case 4:
+            case LARGE_FILE:
                 break;
                 
             default:
