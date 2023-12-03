@@ -39,7 +39,7 @@ public:
         
         // Disable specific items (e.g., files with size > maxSize)
         qint64 fileSize = fileInfo(index).size();
-        if (fileSize > maxSize) {
+        if (fileSize > maxSize && mFilterMode == SMALL_FILE) {
             return defaultFlags & ~Qt::ItemIsEnabled;
         }
         
@@ -51,9 +51,15 @@ public:
         maxSize = size;
     }
     
+    void setFileFilterMode(int filterMode)
+    {
+        mFilterMode = filterMode;
+    }
+    
 private:
     qint64 maxSize = -1;
     QRegularExpression nameFilterRegex;
+    int mFilterMode = SPF;
 };
 
 class MyWidget : public QWidget
@@ -127,6 +133,7 @@ private:
                 break;
                 
             case SMALL_FILE:
+                mModel->setFileFilterMode(SMALL_FILE);
                 break;
                 
             case LARGE_FILE:
