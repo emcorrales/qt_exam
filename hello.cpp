@@ -4,18 +4,12 @@
 #include <QDir>
 #include <QVBoxLayout>
 #include <QComboBox>
-#include <QRegularExpression>
 
 class CustomFileSystemModel : public QFileSystemModel
 {
 public:
     CustomFileSystemModel(QObject* parent = nullptr)
     : QFileSystemModel(parent)
-    {
-    }
-    
-    CustomFileSystemModel(const QRegularExpression &nameFilterRegex, QObject *parent = nullptr)
-    : QFileSystemModel(parent), nameFilterRegex(nameFilterRegex)
     {
     }
     
@@ -28,16 +22,6 @@ public:
                 return QFileSystemModel::data(index, role);
             } else {
                 return QVariant();
-            }
-        } else if (role == Qt::DisplayRole || role == Qt::EditRole) {
-            // Only display files that match the name filter regex
-            if (index.isValid() && !isDir(index)) {
-                QString fileName = QFileSystemModel::data(index, QFileSystemModel::FileNameRole).toString();
-                if (nameFilterRegex.match(fileName).hasMatch()) {
-                    return fileName;
-                } else {
-                    return QVariant(); // Hide files that don't match the regex
-                }
             }
         }
         return QFileSystemModel::data(index, role);
@@ -112,27 +96,28 @@ private:
     
     private slots:
     void onComboBoxIndexChanged(int index) {
-        // Create a regular expression for filtering file names (e.g., ".*\\.txt")
-        QRegularExpression nameFilterRegex(".*\\.txt");
-        
-        // Create a custom file system model with the specified name filter regex
-        CustomFileSystemModel *model = new CustomFileSystemModel(nameFilterRegex);
-        
-        // Set the root path to the directory you want to display
-        QString homePath = QDir::homePath(); // Change this to your desired directory
-        model->setRootPath(homePath);
-        
+        QStringList filters;
+
         switch (index) {
             case 0:
-                
+                filters << "*.spf";
+                mModel->setNameFilters(filters);
                 break;
                 
             case 1:
+                filters << "*.caf";
+                mModel->setNameFilters(filters);
                 break;
+                
             case 2:
+                filters << "*.spf";
+                filters << "*.caf";
+                mModel->setNameFilters(filters);
                 break;
+                
             case 3:
                 break;
+                
             case 4:
                 break;
                 
@@ -140,7 +125,6 @@ private:
                 break;
         }
         
-        mTreeView->setModel(model);
         // Handle the selection change
         qDebug("Selected Index: %d", index);
     }
