@@ -119,17 +119,20 @@ private:
             case SPF:
                 filters << "*.spf";
                 mModel->setNameFilters(filters);
+                mModel->setFileFilterMode(SPF);
                 break;
                 
             case CAF:
                 filters << "*.caf";
                 mModel->setNameFilters(filters);
+                mModel->setFileFilterMode(CAF);
                 break;
                 
             case ALL_READABLE:
                 filters << "*.spf";
                 filters << "*.caf";
                 mModel->setNameFilters(filters);
+                mModel->setFileFilterMode(ALL_READABLE);
                 break;
                 
             case SMALL_FILE:
@@ -137,6 +140,7 @@ private:
                 break;
                 
             case LARGE_FILE:
+                mModel->setFileFilterMode(LARGE_FILE);
                 break;
                 
             default:
