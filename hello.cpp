@@ -94,6 +94,13 @@ public:
         connect(comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MyWidget::onComboBoxIndexChanged);
         layout->addWidget(comboBox);
         
+        QComboBox *actionComboBox = new QComboBox(this);
+        actionComboBox->addItem("Original");
+        actionComboBox->addItem("Copy");
+        actionComboBox->addItem("Original Read-only");
+        connect(actionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MyWidget::onOpenModeIndexChanged);
+        layout->addWidget(actionComboBox);
+        
         // Set the layout for the widget
         setLayout(layout);
     }
@@ -139,6 +146,13 @@ private:
         }
         
         mModel->setNameFilters(filters);
+        
+        // Handle the selection change
+        qDebug("Selected Index: %d", index);
+    }
+    
+    private slots:
+    void onOpenModeIndexChanged(int index) {
         
         // Handle the selection change
         qDebug("Selected Index: %d", index);
