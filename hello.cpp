@@ -58,7 +58,6 @@ public:
     
 private:
     qint64 maxSize = -1;
-    QRegularExpression nameFilterRegex;
     int mFilterMode = SPF;
 };
 
