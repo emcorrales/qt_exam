@@ -65,6 +65,10 @@ public:
         QString homePath = QDir::homePath(); // Change this to your desired directory
         mModel->setRootPath(homePath);
         
+        // Set spf as default filter.
+        QStringList filters;
+        filters << "*.spf";
+        
         // Create a tree view and set the model
         mTreeView = new QTreeView(this);
         mTreeView->setModel(mModel);
