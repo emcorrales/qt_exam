@@ -118,34 +118,35 @@ private:
         switch (index) {
             case SPF:
                 filters << "*.spf";
-                mModel->setNameFilters(filters);
                 mModel->setFileFilterMode(SPF);
                 break;
                 
             case CAF:
                 filters << "*.caf";
-                mModel->setNameFilters(filters);
                 mModel->setFileFilterMode(CAF);
                 break;
                 
             case ALL_READABLE:
                 filters << "*.spf";
                 filters << "*.caf";
-                mModel->setNameFilters(filters);
                 mModel->setFileFilterMode(ALL_READABLE);
                 break;
                 
             case SMALL_FILE:
+                filters = QStringList();
                 mModel->setFileFilterMode(SMALL_FILE);
                 break;
                 
             case LARGE_FILE:
+                filters = QStringList();
                 mModel->setFileFilterMode(LARGE_FILE);
                 break;
                 
             default:
                 break;
         }
+        
+        mModel->setNameFilters(filters);
         
         // Handle the selection change
         qDebug("Selected Index: %d", index);
