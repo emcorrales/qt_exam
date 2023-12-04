@@ -10,14 +10,17 @@
 using namespace Custom;
 
 
-MyDialog::MyDialog(QWidget *parent) : QWidget(parent)
+MyDialog::MyDialog(QWidget *parent) : QDialog(parent)
 {
+    setWindowTitle("Choose a file");
+    
     // Create a layout
     QVBoxLayout *layout = new QVBoxLayout(this);
     initFileSystemModel();
     initTreeView(layout);
     initFileFiltersDropDown(layout);
     initActionDropDown(layout);
+    initChooseFileButton(layout);
     setLayout(layout);
 }
 
@@ -128,4 +131,9 @@ void MyDialog::onActionModeIndexChanged(int index) {
     
     // Handle the selection change
     qDebug("Selected Index: %d", index);
+}
+
+void MyDialog::initChooseFileButton(QVBoxLayout *layout) {
+    QPushButton *button = new QPushButton("Open");
+    layout->addWidget(button);
 }

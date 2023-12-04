@@ -10,10 +10,11 @@
 
 
 
-#include <QWidget>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QPushButton>
+#include <QDialog>
 
 #define ORIGINAL 0
 #define COPY 1
@@ -26,7 +27,7 @@
 
 namespace Custom {
 
-class MyDialog : public QWidget
+class MyDialog : public QDialog
 {
 public:
     MyDialog(QWidget *parent = nullptr);
@@ -41,6 +42,7 @@ private:
     void onFileFilterIndexChanged(int index);
     void initActionDropDown(QVBoxLayout *layout);
     void onActionModeIndexChanged(int index);
+    void initChooseFileButton(QVBoxLayout *layout);
     
     QTreeView *mTreeView;
     MyFileSystemModel *mModel;
